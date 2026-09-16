@@ -1,9 +1,9 @@
 import { selected_movie_list } from "../../../data";
 import { useState } from "react";
-import MyListSummary from "./MyListSummary";
-import MyMovieList from "./MyMovieList";
+import MyListSummary from "./MyMovieList/MyListSummary";
+import MyMovieList from "./MyMovieList/MyMovieList";
 
-export default function MyMovieListContainer() {
+export default function MyMovieListSection() {
 
     const [selectedMovies, setSelectedMovies] = useState(selected_movie_list);
     const [isOpenList, setIsOpenList] = useState(true);

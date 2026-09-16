@@ -1,6 +1,6 @@
 import { useState } from "react";
-import MovieList from "./MovieList";
-export default function MovieListContainer() {
+import MovieList from "./MovieList/MovieList";
+export default function MovieListSection() {
     const [isOpenMovies, setIsOpenMovies] = useState(true);
 
     return (

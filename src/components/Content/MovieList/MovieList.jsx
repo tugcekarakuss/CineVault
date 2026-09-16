@@ -1,5 +1,5 @@
 import { useState } from "react";
-import {movieList} from "../../../data"
+import {movieList} from "../../../../data"
 import Movie from "./Movie";
 export default function MovieList() {
     const [movies, setMovies] = useState(movieList);

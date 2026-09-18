@@ -1,8 +1,8 @@
-export default function NavSearchResult() {
+export default function NavSearchResult({movies}) {
     return (
         <div className="text-sm text-gray-400">
             <span className="text-white font-semibold">
-                3
+                {movies.length}
             </span>{" "}
             movies found
         </div>

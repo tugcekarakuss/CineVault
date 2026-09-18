@@ -1,6 +1,6 @@
 import { useState } from "react";
-import MovieList from "./MovieList/MovieList";
-export default function MovieListSection() {
+
+export default function MovieListSection({ children }) {
     const [isOpenMovies, setIsOpenMovies] = useState(true);
 
     return (
@@ -19,7 +19,7 @@ export default function MovieListSection() {
                 </button>
             </div>
 
-            {isOpenMovies && <MovieList/>}
+            {isOpenMovies && children}
         </div>
     )
 }

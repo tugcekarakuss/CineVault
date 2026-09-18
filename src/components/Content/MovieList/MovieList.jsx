@@ -1,8 +1,5 @@
-import { useState } from "react";
-import {movieList} from "../../../../data"
 import Movie from "./Movie";
-export default function MovieList() {
-    const [movies, setMovies] = useState(movieList);
+export default function MovieList({movies}) {
 
     return (
         <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-5">

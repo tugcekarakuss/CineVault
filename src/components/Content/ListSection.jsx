@@ -1,14 +1,14 @@
 import { useState } from "react";
 
-export default function MovieListSection({ children }) {
+export default function ListSection({ children,title,className }) {
     const [isOpenMovies, setIsOpenMovies] = useState(true);
 
     return (
-        <div className="col-span-12 md:col-span-9 order-2 md:order-1">
+        <div className={className}>
 
             <div className="flex items-center justify-between mb-3">
                 <h2 className="text-xl font-semibold text-gray-300">
-                    All Movies
+                    {title}
                 </h2>
 
                 <button

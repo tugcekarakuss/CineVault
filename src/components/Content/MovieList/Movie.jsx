@@ -1,3 +1,4 @@
+import { FaCalendarAlt } from "react-icons/fa";
 export default function Movie({ movie }) {
     return (
         <div
@@ -14,8 +15,11 @@ export default function Movie({ movie }) {
                     {movie.title}
                 </h3>
 
-                <div className="text-xs text-gray-400 mt-1 flex items-center gap-1">
-                    📅 <span>{movie.year}</span>
+                <div className="text-sm text-gray-400 mt-1 flex items-center gap-1">
+                    <span className="flex items-center gap-2">
+                        <FaCalendarAlt className="text-highlight"/>
+                        {movie.year}
+                    </span>
                 </div>
             </div>
         </div>

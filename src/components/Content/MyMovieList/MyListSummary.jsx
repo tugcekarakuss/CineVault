@@ -1,3 +1,4 @@
+import { FaStar, FaClock } from "react-icons/fa";
 export default function MyListSummary({ selectedMovies }) {
 
     const getAverage = (arr) =>
@@ -7,7 +8,6 @@ export default function MyListSummary({ selectedMovies }) {
 
     const avgRating = getAverage(selectedMovies.map(m => m.rating));
     const avgDuration = getAverage(selectedMovies.map(m => m.duration));
-    
     return (
         <div className="bg-gray-900 rounded-xl p-4 mb-4 shadow-lg">
             <h2 className="text-xl font-semibold mb-3">
@@ -15,8 +15,15 @@ export default function MyListSummary({ selectedMovies }) {
             </h2>
 
             <div className="flex justify-between text-xl text-gray-400">
-                <span>⭐ {avgRating.toFixed(2)}</span>
-                <span>⏱ {avgDuration.toFixed(2)} dk</span>
+                <span className="flex items-center gap-2">
+                    <FaStar className="text-highlight" /> 
+                    {avgRating.toFixed(2)}
+                </span>
+
+                <span className="flex items-center gap-2">
+                    <FaClock className="text-highlight"/> 
+                    {avgDuration.toFixed(2)} min.
+                </span>
             </div>
         </div>
     )

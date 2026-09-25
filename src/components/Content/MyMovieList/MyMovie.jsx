@@ -1,3 +1,4 @@
+import { FaStar, FaClock } from "react-icons/fa";
 export default function MyMovie({movie}) {
     return (
         <div
@@ -15,11 +16,10 @@ export default function MyMovie({movie}) {
                         {movie.title}
                     </h3>
 
-                    <div className="flex justify-between text-xs text-gray-400">
-                        <span>⭐ {movie.rating}</span>
-                        <span>⏱ {movie.duration} dk</span>
+                    <div className="flex justify-between  text-gray-400">
+                        <span className="flex items-center gap-2"><FaStar className="text-highlight"/> {movie.rating}</span>
+                        <span className="flex items-center gap-2"><FaClock className="text-highlight"/> {movie.duration} min.</span>
                     </div>
-                    
                 </div>
             </div>
         </div>

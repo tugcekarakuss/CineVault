@@ -1,4 +1,3 @@
-
 export default function Navbar({children}) {
   return (
     <nav className="bg-gray-900 border-b border-gray-800 px-6 py-3">

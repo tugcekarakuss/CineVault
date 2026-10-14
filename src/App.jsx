@@ -1,8 +1,6 @@
-import { useState } from "react";
-
-import { movieList, selected_movie_list } from "../data";
-
 import "/src/App.css";
+import { useState, useEffect } from "react";
+import { getPopularMovies } from "./services/tmdb"
 
 /* navbar components */
 import Navbar from "./components/Navbar/Navbar";
@@ -17,9 +15,34 @@ import ListSection from "./components/Content/ListSection";
 import MyListSummary from "./components/Content/MyMovieList/MyListSummary";
 import MyMovieList from "./components/Content/MyMovieList/MyMovieList";
 
+import Loading from "./components/Loading";
+import ErrorMessage from "./components/ErrorMessage"
+
 export default function App() {
-  const [movies, setMovies] = useState(movieList);
-  const [selectedMovies, setSelectedMovies] = useState(selected_movie_list);
+  const [movies, setMovies] = useState([]);
+  const [selectedMovies, setSelectedMovies] = useState([]);
+  const [loading, setLoading] = useState(false)
+  const [error, setError] = useState("")
+
+  useEffect(() => {
+    async function getMovies() {
+      try {
+        setLoading(true)
+        setError("")
+        const popularMovies = await getPopularMovies()
+
+        if(popularMovies.length==0){
+          throw new Error("No movies found.")
+        }
+        setMovies(popularMovies)
+      }
+      catch(err){
+        setError(err.message || "Failed to load movies.")
+      }
+        setLoading(false)
+      }
+      getMovies()
+  }, [])
 
   return (
     <div className="min-h-screen bg-gray-950 text-white">
@@ -37,7 +60,10 @@ export default function App() {
           title="All Movies"
           className="col-span-12 md:col-span-9 order-2 md:order-1"
         >
-          <MovieList movies={movies} />
+          {loading && <Loading/>}
+          {!loading && !error && <MovieList movies={movies} />}
+          {error && <ErrorMessage message={error}/>}
+          
         </ListSection>
 
         <ListSection

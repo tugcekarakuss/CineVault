@@ -6,7 +6,7 @@ export default function ListSection({ children,title,className }) {
     return (
         <div className={className}>
 
-            <div className="flex items-center justify-between mb-3">
+            <div className="flex items-center justify-between mb-3 pt-10">
                 <h2 className="text-xl font-semibold text-gray-300">
                     {title}
                 </h2>

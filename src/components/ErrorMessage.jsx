@@ -2,7 +2,7 @@ import { FaFilm, FaExclamationCircle } from "react-icons/fa";
 
 export default function MovieError({ message }) {
   return (
-    <div className="col-span-full flex min-h-[420px] flex-col items-center justify-center rounded-2xl border border-white/10 bg-gray-900/70 px-6 py-12 text-center shadow-xl">
+    <div className="col-span-full flex min-h-105 flex-col items-center justify-center rounded-2xl border border-white/10 bg-gray-900/70 px-6 py-12 text-center shadow-xl">
       <div className="mb-6 flex h-20 w-20 items-center justify-center rounded-full border border-violet-400/20 bg-violet-500/10">
         <FaFilm className="text-3xl text-violet-400" />
       </div>

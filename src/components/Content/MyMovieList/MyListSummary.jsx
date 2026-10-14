@@ -4,7 +4,7 @@ export default function MyListSummary({ selectedMovies }) {
     const getAverage = (arr) =>
         arr.length === 0
             ? 0
-            : arr.reduce((sum, val) => sum + val, 0) / arr.length;
+            : arr.reduce((sum, val) => sum + val / arr.length,0);
 
     const avgRating = getAverage(selectedMovies.map(m => m.rating));
     const avgDuration = getAverage(selectedMovies.map(m => m.duration));

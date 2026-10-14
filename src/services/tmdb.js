@@ -8,8 +8,6 @@ export async function getPopularMovies(page = 1) {
   url.searchParams.set("language", "en-US");
   url.searchParams.set("page", page);
 
-  console.log("API URL:", url.toString().replace(API_KEY, "[HIDDEN]"));
-
   const response = await fetch(url);
 
   if (!response.ok) {
@@ -17,6 +15,24 @@ export async function getPopularMovies(page = 1) {
   }
 
   const data = await response.json();
+  return data.results;
+}
 
+
+export async function searchMovies(query, page = 1) {
+  const url = new URL(`${BASE_URL}/search/movie`)
+
+  url.searchParams.set("api_key", API_KEY);
+  url.searchParams.set("language", "en-US");
+  url.searchParams.set("query", query);
+  url.searchParams.set("page", page);
+
+  const response = await fetch(url);
+
+  if (!response.ok) {
+    throw new Error(`Unable to search movies: ${response.status}`);
+  }
+
+  const data = await response.json();
   return data.results;
 }

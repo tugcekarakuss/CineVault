@@ -1,6 +1,6 @@
 import "/src/App.css";
 import { useState, useEffect } from "react";
-import { getPopularMovies } from "./services/tmdb"
+import { getPopularMovies, searchMovies } from "./services/tmdb"
 
 /* navbar components */
 import Navbar from "./components/Navbar/Navbar";
@@ -23,33 +23,43 @@ export default function App() {
   const [selectedMovies, setSelectedMovies] = useState([]);
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState("")
+  const [query, setQuery] = useState("")
 
   useEffect(() => {
     async function getMovies() {
       try {
-        setLoading(true)
-        setError("")
-        const popularMovies = await getPopularMovies()
+        setLoading(true);
+        setError("");
+        let results;
 
-        if(popularMovies.length==0){
-          throw new Error("No movies found.")
+        if (query.trim().length < 4) {
+          results = await getPopularMovies();
         }
-        setMovies(popularMovies)
+        else {
+          results = await searchMovies(query.trim());
+        }
+        setMovies(results);
+
+        if (results.length === 0) {
+          setError("No movies found.");
+        }
       }
-      catch(err){
-        setError(err.message || "Failed to load movies.")
+      catch (err) {
+        setError(err.message || "Failed to load movies.");
       }
-        setLoading(false)
+      finally {
+        setLoading(false);
       }
-      getMovies()
-  }, [])
+    }
+    getMovies();
+  }, [query]);
 
   return (
     <div className="min-h-screen bg-gray-950 text-white">
       {/* navbar */}
       <Navbar>
         <Logo />
-        <Search />
+        <Search query={query} setQuery={setQuery} />
         <NavSearchResult movies={movies} />
       </Navbar>
 
@@ -60,10 +70,10 @@ export default function App() {
           title="All Movies"
           className="col-span-12 md:col-span-9 order-2 md:order-1"
         >
-          {loading && <Loading/>}
+          {loading && <Loading />}
           {!loading && !error && <MovieList movies={movies} />}
-          {error && <ErrorMessage message={error}/>}
-          
+          {error && <ErrorMessage message={error} />}
+
         </ListSection>
 
         <ListSection

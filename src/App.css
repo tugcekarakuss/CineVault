@@ -2,3 +2,6 @@
 @theme{
     --color-highlight:#66508a;
 }
+html {
+  scroll-behavior: smooth;
+}

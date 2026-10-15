@@ -9,6 +9,8 @@ import Search from "./components/Navbar/Search";
 import NavSearchResult from "./components/Navbar/NavSearchResult";
 
 /* main components */
+import Hero from "./components/Content/Hero";
+import FeaturedMovie from "./components/Content/FeaturedMovie";
 import MovieContent from "./components/Content/MovieContent";
 import MovieList from "./components/Content/MovieList/MovieList";
 import ListSection from "./components/Content/ListSection";
@@ -24,6 +26,7 @@ export default function App() {
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState("")
   const [query, setQuery] = useState("")
+  const [featuredMovie, setFeaturedMovie] = useState(null);
 
   useEffect(() => {
     async function getMovies() {
@@ -39,6 +42,7 @@ export default function App() {
           results = await searchMovies(query.trim());
         }
         setMovies(results);
+        setFeaturedMovie((current) => current ?? results[0] ?? null);
 
         if (results.length === 0) {
           setError("No movies found.");
@@ -55,37 +59,40 @@ export default function App() {
   }, [query]);
 
   return (
-    <div className="min-h-screen bg-gray-950 text-white">
-      {/* navbar */}
-      <Navbar>
-        <Logo />
-        <Search query={query} setQuery={setQuery} />
-        <NavSearchResult movies={movies} />
-      </Navbar>
+      <div className="min-h-screen bg-gray-950 text-white">
+        <Navbar>
+          <Logo />
+          <Search query={query} setQuery={setQuery} />
+          <NavSearchResult movies={movies} />
+        </Navbar>
 
-      {/* content */}
-      <MovieContent>
+        <main className="px-4 pb-10 pt-24 sm:px-6 lg:px-10">
+          <Hero/>
+          <FeaturedMovie movie={featuredMovie} />
 
-        <ListSection
-          title="All Movies"
-          className="col-span-12 md:col-span-9 order-2 md:order-1"
-        >
-          {loading && <Loading />}
-          {!loading && !error && <MovieList movies={movies} />}
-          {error && <ErrorMessage message={error} />}
+          <div className="mt-10" id="all-movies">
+            <MovieContent>
+              <ListSection
+                title="All Movies"
+                className="col-span-12 md:col-span-9 order-2 md:order-1"
+              >
+                {loading && <Loading />}
+                {!loading && !error && <MovieList movies={movies} />}
+                {error && <ErrorMessage message={error} />}
 
-        </ListSection>
+              </ListSection>
 
-        <ListSection
-          title="My List"
-          className="col-span-12 md:col-span-3 order-1 md:order-2"
-        >
-          <MyListSummary selectedMovies={selectedMovies} />
-          <MyMovieList selectedMovies={selectedMovies} />
+              <ListSection
+                title="My List"
+                className="col-span-12 md:col-span-3 order-1 md:order-2"
+              >
+                <MyListSummary selectedMovies={selectedMovies} />
+                <MyMovieList selectedMovies={selectedMovies} />
+              </ListSection>
 
-        </ListSection>
-
-      </MovieContent>
-    </div>
-  );
+            </MovieContent>
+          </div>
+        </main>
+      </div>
+  )
 }

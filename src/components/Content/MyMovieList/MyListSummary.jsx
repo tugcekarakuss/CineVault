@@ -4,7 +4,7 @@ export default function MyListSummary({ selectedMovies }) {
     const getAverage = (arr) =>
         arr.length === 0
             ? 0
-            : arr.reduce((sum, val) => sum + val / arr.length,0);
+            : arr.reduce((sum, val) => sum + val / arr.length, 0);
 
     const avgRating = getAverage(selectedMovies.map(m => m.rating));
     const avgDuration = getAverage(selectedMovies.map(m => m.duration));
@@ -16,12 +16,12 @@ export default function MyListSummary({ selectedMovies }) {
 
             <div className="flex justify-between text-xl text-gray-400">
                 <span className="flex items-center gap-2">
-                    <FaStar className="text-highlight" /> 
+                    <FaStar className="text-highlight" />
                     {avgRating.toFixed(2)}
                 </span>
 
                 <span className="flex items-center gap-2">
-                    <FaClock className="text-highlight"/> 
+                    <FaClock className="text-highlight" />
                     {avgDuration.toFixed(2)} min.
                 </span>
             </div>

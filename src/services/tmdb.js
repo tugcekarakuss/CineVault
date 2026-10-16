@@ -18,7 +18,6 @@ export async function getPopularMovies(page = 1) {
   return data.results;
 }
 
-
 export async function searchMovies(query, page = 1) {
   const url = new URL(`${BASE_URL}/search/movie`)
 
@@ -35,4 +34,20 @@ export async function searchMovies(query, page = 1) {
 
   const data = await response.json();
   return data.results;
+}
+
+
+export async function getMovieDetails(movieId) {
+  const url = new URL(`${BASE_URL}/movie/${movieId}`);
+
+  url.searchParams.set("api_key", API_KEY);
+  url.searchParams.set("language", "en-US");
+
+  const response = await fetch(url);
+
+  if (!response.ok) {
+    throw new Error(`Unable to load movie details: ${response.status}`);
+  }
+
+  return await response.json();
 }

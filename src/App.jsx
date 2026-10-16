@@ -1,6 +1,6 @@
 import "/src/App.css";
 import { useState, useEffect } from "react";
-import { getPopularMovies, searchMovies } from "./services/tmdb"
+import { getPopularMovies, searchMovies, getMovieDetails } from "./services/tmdb"
 
 /* navbar components */
 import Navbar from "./components/Navbar/Navbar";
@@ -14,6 +14,7 @@ import FeaturedMovie from "./components/Content/FeaturedMovie";
 import MovieContent from "./components/Content/MovieContent";
 import MovieList from "./components/Content/MovieList/MovieList";
 import ListSection from "./components/Content/ListSection";
+import MovieDetails from "./components/Content/MovieList/MovieDetails";
 import MyListSummary from "./components/Content/MyMovieList/MyListSummary";
 import MyMovieList from "./components/Content/MyMovieList/MyMovieList";
 
@@ -26,7 +27,15 @@ export default function App() {
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState("")
   const [query, setQuery] = useState("")
+  const [selectedMovie, setSelectedMovie] = useState(null)
+  const [movieDetails, setMovieDetails] = useState(null);
+  const [detailsLoading, setDetailsLoading] = useState(false);
+  const [detailsError, setDetailsError] = useState("");
   const [featuredMovie, setFeaturedMovie] = useState(null);
+
+  function handleSelectedMovie(id) {
+    setSelectedMovie(selectedMovie => id === selectedMovie ? null : id)
+  }
 
   useEffect(() => {
     async function getMovies() {
@@ -58,41 +67,91 @@ export default function App() {
     getMovies();
   }, [query]);
 
+
+  useEffect(() => {
+    if (selectedMovie === null) {
+      setMovieDetails(null);
+      setDetailsError("");
+      setDetailsLoading(false);
+      return;
+    }
+
+    let ignore = false;
+
+    async function fetchMovieDetails() {
+      try {
+        setDetailsLoading(true);
+        setDetailsError("");
+
+        const data = await getMovieDetails(selectedMovie);
+
+        if (!ignore) {
+          setMovieDetails(data);
+        }
+      } catch (err) {
+        if (!ignore) {
+          setMovieDetails(null);
+          setDetailsError(
+            err.message || "Failed to load movie details."
+          );
+        }
+      } finally {
+        if (!ignore) {
+          setDetailsLoading(false);
+        }
+      }
+    }
+
+    fetchMovieDetails();
+
+    return () => {
+      ignore = true;
+    };
+  }, [selectedMovie]);
+
+
   return (
-      <div className="min-h-screen bg-gray-950 text-white">
-        <Navbar>
-          <Logo />
-          <Search query={query} setQuery={setQuery} />
-          <NavSearchResult movies={movies} />
-        </Navbar>
+    <div className="min-h-screen bg-gray-950 text-white">
+      <Navbar>
+        <Logo />
+        <Search query={query} setQuery={setQuery} />
+        <NavSearchResult movies={movies} />
+      </Navbar>
 
-        <main className="px-4 pb-10 pt-24 sm:px-6 lg:px-10">
-          <Hero/>
-          <FeaturedMovie movie={featuredMovie} />
+      <main className="px-4 pb-10 pt-24 sm:px-6 lg:px-10">
+        <Hero />
+        <FeaturedMovie movie={featuredMovie} />
 
-          <div className="mt-10" id="all-movies">
-            <MovieContent>
-              <ListSection
-                title="All Movies"
-                className="col-span-12 md:col-span-9 order-2 md:order-1"
-              >
-                {loading && <Loading />}
-                {!loading && !error && <MovieList movies={movies} />}
-                {error && <ErrorMessage message={error} />}
+        <div className="mt-10" id="all-movies">
+          <MovieContent>
+            <ListSection
+              title="All Movies"
+              className="col-span-12 md:col-span-9 order-2 md:order-1"
+            >
+              {loading && <Loading />}
+              {!loading && !error && <MovieList onSelectedMovie={handleSelectedMovie} selectedMovie={selectedMovie} movies={movies} />}
+              {error && <ErrorMessage message={error} />}
 
-              </ListSection>
+            </ListSection>
 
-              <ListSection
-                title="My List"
-                className="col-span-12 md:col-span-3 order-1 md:order-2"
-              >
+            <ListSection
+              title="My List"
+              className="col-span-12 md:col-span-3 order-1 md:order-2"
+            >
+              <div className="rounded-xl bg-gray-900 md:sticky md:top-10">
+                <MovieDetails
+                  movie={movieDetails}
+                  loading={detailsLoading}
+                  error={detailsError}
+                />
                 <MyListSummary selectedMovies={selectedMovies} />
                 <MyMovieList selectedMovies={selectedMovies} />
-              </ListSection>
+              </div>
+            </ListSection>
 
-            </MovieContent>
-          </div>
-        </main>
-      </div>
+          </MovieContent>
+        </div>
+      </main>
+    </div>
   )
 }

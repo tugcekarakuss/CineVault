@@ -1,6 +1,7 @@
 @import "tailwindcss";
 @theme{
     --color-highlight:#66508a;
+    --color-secondary:#96c21f;
 }
 html {
   scroll-behavior: smooth;

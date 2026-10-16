@@ -1,4 +1,3 @@
-
 const IMAGE_BASE_URL = "https://image.tmdb.org/t/p/original";
 
 const genreNames = {
@@ -56,7 +55,7 @@ export default function FeaturedMovie({ movie }) {
 
             {/* Movie information */}
             <div className="flex min-h-95 max-w-xl flex-col justify-center px-6 py-10 sm:px-9 md:min-h-88.75 md:px-11 md:py-12">
-                <p className="mb-4 flex items-center gap-2 text-xs font-bold uppercase tracking-[0.18em] text-amber-400">
+                <p className="mb-4 flex items-center gap-2 text-xs font-bold uppercase tracking-[0.18em] text-secondary">
                     <span aria-hidden="true">✦</span>
                     The Spotlight
                 </p>
@@ -67,7 +66,7 @@ export default function FeaturedMovie({ movie }) {
 
                 <div className="mb-4 flex flex-wrap items-center gap-x-4 gap-y-2 text-sm text-slate-300">
                     {movie.vote_average != null && (
-                        <span className="font-semibold text-amber-400">
+                        <span className="font-semibold text-highlight">
                             ★ {movie.vote_average.toFixed(1)}
                         </span>
                     )}
@@ -80,13 +79,13 @@ export default function FeaturedMovie({ movie }) {
                 </div>
 
                 <p className="mb-7 line-clamp-3 max-w-md text-sm leading-7 text-slate-300 sm:text-base">
-                    {movie.overview || "Discover more about this movie."}
+                    {movie.overview?.replaceAll("—","") || "Discover more about this movie."}
                 </p>
 
                 <div>
                     <a
                         href="#all-movies"
-                        className="inline-flex items-center gap-3 rounded-lg bg-amber-400 px-5 py-3 font-medium text-gray-950 transition-colors hover:bg-amber-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-amber-300 focus-visible:ring-offset-2 focus-visible:ring-offset-gray-950"
+                        className="inline-flex items-center gap-3 rounded-lg  px-5 py-3 font-medium text-gray-950 transition-colors bg-secondary hover:bg-secondary/80 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-secondary focus-visible:ring-offset-2 focus-visible:ring-offset-gray-950"
                     >
                         Explore Movies
                     </a>

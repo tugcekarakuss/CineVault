@@ -1,6 +1,6 @@
 import { FaStar, FaTimes, FaRegBookmark } from "react-icons/fa";
 
-export default function MyMovie({ movie }) {
+export default function MyMovie({ movie,onDeleteFromList }) {
     if (!movie) {
         return (
             <div className="flex flex-col items-center justify-center rounded-xl border border-white/10 bg-gray-900/70 px-4 py-12 text-center">
@@ -56,8 +56,9 @@ export default function MyMovie({ movie }) {
 
                 <button
                     type="button"
+                    onClick={()=>onDeleteFromList(movie.id)}
                     aria-label={`Remove ${movie.title}`}
-                    className="shrink-0 text-primary transition-colors duration-200 hover:text-secondary"
+                    className="shrink-0 text-primary transition-colors duration-200 hover:text-secondary cursor-pointer"
                 >
                     <FaTimes />
                 </button>

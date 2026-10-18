@@ -46,6 +46,11 @@ export default function App() {
     })
   }
 
+  function handleDeleteFromList(id) {
+    setSelectedMovies((selectedMovies) => 
+      selectedMovies.filter((m) => m.id !== id))
+  }
+
   useEffect(() => {
     async function getMovies() {
       try {
@@ -132,17 +137,17 @@ export default function App() {
           <MovieContent>
             <ListSection
               title="All Movies"
-              className="col-span-12 md:col-span-9 order-2 md:order-1"
+              className="col-span-12 lg:col-span-9 order-2 lg:order-1"
             >
               {loading && <Loading />}
-              {!loading && !error && <MovieList selectedMovies={selectedMovies} onSelectedMovie={handleSelectedMovie} selectedMovie={selectedMovie} movies={movies} />}
+              {!loading && !error && <MovieList onDeleteFromList={handleDeleteFromList} selectedMovies={selectedMovies} onSelectedMovie={handleSelectedMovie} selectedMovie={selectedMovie} movies={movies} />}
               {error && <ErrorMessage message={error} />}
 
             </ListSection>
 
             <ListSection
               title="My List"
-              className="col-span-12 md:col-span-3 order-1 md:order-2 "
+              className="col-span-12 lg:col-span-3 order-1 lg:order-2 "
             >
               <div className="rounded-lg bg-gray-900 border border-gray-600">
                 <MovieDetails
@@ -153,7 +158,7 @@ export default function App() {
                   selectedMovies={selectedMovies}
                 />
                 <MyListSummary selectedMovies={selectedMovies} />
-                <MyMovieList selectedMovies={selectedMovies} />
+                <MyMovieList selectedMovies={selectedMovies} onDeleteFromList={handleDeleteFromList} />
               </div>
             </ListSection>
 

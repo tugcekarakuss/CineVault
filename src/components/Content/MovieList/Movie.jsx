@@ -1,6 +1,6 @@
 import { FaStar, FaBookmark } from "react-icons/fa";
 
-export default function Movie({ movie, onSelectedMovie, selectedMovie, selectedMovies }) {
+export default function Movie({ movie, onSelectedMovie, selectedMovie, selectedMovies ,onDeleteFromList }) {
   const releaseYear = movie.release_date?.slice(0, 4);
 
   const isAdded = selectedMovies.some((item) => item.id === movie.id)
@@ -27,8 +27,9 @@ export default function Movie({ movie, onSelectedMovie, selectedMovie, selectedM
         {isAdded && (
           <button
             type="button"
+            onClick={()=>onDeleteFromList(movie.id)}
             aria-label={`${movie.title} is in your watchlist`}
-            className="absolute right-2 top-2 flex h-6 w-6 rounded-md items-center justify-center text-sm bg-gray-900/70 text-secondary "
+            className="absolute right-2 top-2 flex h-6 w-6 rounded-md items-center justify-center text-sm bg-gray-900/70 text-secondary hover:text-primary cursor-pointer"
           >
             <FaBookmark />
           </button>

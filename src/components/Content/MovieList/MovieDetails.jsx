@@ -1,6 +1,11 @@
-import { FaFilm, FaStar, FaClock, FaPlus } from "react-icons/fa";
+import { FaFilm, FaStar, FaClock, FaPlus, FaCheck } from "react-icons/fa";
 
-export default function MovieDetails({ movie, loading, error }) {
+export default function MovieDetails({ movie, loading, error, OnAddToList, selectedMovies }) {
+
+  const isAdded = selectedMovies.some(
+    (item) => item.id === movie.id
+  )
+
   if (loading) {
     return (
       <p className="p-5 text-sm text-gray-400">
@@ -20,8 +25,8 @@ export default function MovieDetails({ movie, loading, error }) {
   if (!movie) {
     return (
       <div className="flex flex-col items-center justify-center border-y border-white/10 bg-gray-900/70 px-4 py-12 text-center">
-        <div className="mb-6 flex h-20 w-20 items-center justify-center rounded-full border border-violet-400/20 bg-violet-500/10">
-          <FaFilm className="text-3xl text-violet-400" />
+        <div className="mb-6 flex h-12 w-12 items-center justify-center rounded-full border border-violet-400/20 bg-violet-500/10">
+          <FaFilm className="text-lg text-violet-400" />
         </div>
 
         <h6 className="text-sm font-bold text-white">
@@ -42,7 +47,7 @@ export default function MovieDetails({ movie, loading, error }) {
         Movie Details
       </p>
 
-      <div className="flex items-stretch gap-3">
+      <div className="flex items-center gap-3">
         <img
           src={
             movie.poster_path
@@ -50,7 +55,7 @@ export default function MovieDetails({ movie, loading, error }) {
               : "/noImage.jpg"
           }
           alt={movie.title}
-          className="w-19 shrink-0 rounded-md object-cover"
+          className="w-20 h-28 shrink-0 rounded-md object-cover"
         />
 
         <div className="min-w-0 flex-1">
@@ -61,7 +66,7 @@ export default function MovieDetails({ movie, loading, error }) {
           <div className="mt-2 flex flex-wrap items-center gap-2 text-[11px] text-slate-400">
             <span>{movie.release_date?.slice(0, 4)}</span>
 
-            <span className="flex items-center gap-1 text-highlight">
+            <span className="flex items-center gap-1 text-primary">
               <FaStar />
               {movie.vote_average?.toFixed(1)}
             </span>
@@ -94,10 +99,19 @@ export default function MovieDetails({ movie, loading, error }) {
 
       <button
         type="button"
-        className="mt-5 flex w-full items-center justify-center gap-2 rounded-md bg-secondary px-4 py-3 text-xs font-medium text-gray-950 transition-colors duration-300 hover:bg-highlight"
+        onClick={() => {
+          if (!isAdded) {
+            OnAddToList(movie);
+          }
+        }}
+        disabled={isAdded}
+        className={`mt-5 flex w-full items-center justify-center gap-2 rounded-md px-4 py-3 text-xs font-medium transition-colors duration-300 ${isAdded
+          ? "bg-primary text-white cursor-default"
+          : "bg-secondary text-gray-950 hover:bg-primary"
+          }`}
       >
-        <FaPlus />
-        Add to My List
+        {isAdded ? <FaCheck /> : <FaPlus />}
+        {isAdded ? "Added to My List" : "Add to My List"}
       </button>
     </div>
   );

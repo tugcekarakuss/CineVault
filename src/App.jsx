@@ -34,7 +34,16 @@ export default function App() {
   const [featuredMovie, setFeaturedMovie] = useState(null);
 
   function handleSelectedMovie(id) {
-    setSelectedMovie(selectedMovie => id === selectedMovie ? null : id)
+    setSelectedMovie(id)
+  }
+
+  function handleAddToList(movie) {
+    setSelectedMovies((prev) => {
+      if (prev.some((item) => item.id === movie.id)) {
+        return prev
+      }
+      return [...prev, movie]
+    })
   }
 
   useEffect(() => {
@@ -70,9 +79,6 @@ export default function App() {
 
   useEffect(() => {
     if (selectedMovie === null) {
-      setMovieDetails(null);
-      setDetailsError("");
-      setDetailsLoading(false);
       return;
     }
 
@@ -129,20 +135,22 @@ export default function App() {
               className="col-span-12 md:col-span-9 order-2 md:order-1"
             >
               {loading && <Loading />}
-              {!loading && !error && <MovieList onSelectedMovie={handleSelectedMovie} selectedMovie={selectedMovie} movies={movies} />}
+              {!loading && !error && <MovieList selectedMovies={selectedMovies} onSelectedMovie={handleSelectedMovie} selectedMovie={selectedMovie} movies={movies} />}
               {error && <ErrorMessage message={error} />}
 
             </ListSection>
 
             <ListSection
               title="My List"
-              className="col-span-12 md:col-span-3 order-1 md:order-2"
+              className="col-span-12 md:col-span-3 order-1 md:order-2 "
             >
-              <div className="rounded-xl bg-gray-900 md:sticky md:top-10">
+              <div className="rounded-lg bg-gray-900 border border-gray-600">
                 <MovieDetails
                   movie={movieDetails}
                   loading={detailsLoading}
                   error={detailsError}
+                  OnAddToList={handleAddToList}
+                  selectedMovies={selectedMovies}
                 />
                 <MyListSummary selectedMovies={selectedMovies} />
                 <MyMovieList selectedMovies={selectedMovies} />

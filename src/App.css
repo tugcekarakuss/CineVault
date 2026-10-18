@@ -1,8 +1,23 @@
+@import url("https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,100..1000;1,9..40,100..1000&display=swap");
 @import "tailwindcss";
-@theme{
-    --color-highlight:#66508a;
-    --color-secondary:#96c21f;
+
+@theme {
+  --font-poppins: 'DM Sans', sans-serif;
+  --color-primary: #66508a;
+  --color-secondary: #96c21f;
 }
+
 html {
+  font-family: 'DM Sans', sans-serif;
   scroll-behavior: smooth;
+}
+
+::selection {
+  background-color: var(--color-secondary);
+  color: var(--color-primary);
+}
+
+::-moz-selection {
+  background-color: var(--color-primary);
+  color: var(--color-secondary);
 }

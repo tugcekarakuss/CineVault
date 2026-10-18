@@ -6,7 +6,7 @@ export default function Logo() {
       <img
         src={LogoImg}
         alt="Logo"
-        className="h-auto w-24 sm:w-28 md:w-32 lg:w-36 object-contain"
+        className="h-auto w-28 sm:w-12 md:w-24 lg:w-28 object-contain"
       />
     </div>
   );

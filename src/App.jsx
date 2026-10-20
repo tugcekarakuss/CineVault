@@ -1,5 +1,5 @@
 import "/src/App.css";
-import { useState, useEffect } from "react";
+import { useState, useEffect,useRef  } from "react";
 import { getPopularMovies, searchMovies, getMovieDetails } from "./services/tmdb"
 
 /* navbar components */
@@ -20,6 +20,7 @@ import MyMovieList from "./components/Content/MyMovieList/MyMovieList";
 
 import Loading from "./components/Loading";
 import ErrorMessage from "./components/ErrorMessage"
+import Footer from "./components/Footer";
 
 export default function App() {
   const [movies, setMovies] = useState([]);
@@ -81,11 +82,13 @@ export default function App() {
     getMovies();
   }, [query]);
 
-
+const movieDetailsRef = useRef(null);
   useEffect(() => {
-    if (selectedMovie === null) {
-      return;
-    }
+    if (selectedMovie === null) {return;}
+    movieDetailsRef.current?.scrollIntoView({
+    behavior: "smooth",
+    block: "start",
+  });
 
     let ignore = false;
 
@@ -149,7 +152,7 @@ export default function App() {
               title="My List"
               className="col-span-12 lg:col-span-3 order-1 lg:order-2 "
             >
-              <div className="rounded-lg bg-gray-900 border border-gray-600">
+              <div ref={movieDetailsRef} className="rounded-lg bg-gray-900 border border-gray-800 scroll-mt-24">
                 <MovieDetails
                   movie={movieDetails}
                   loading={detailsLoading}
@@ -165,6 +168,7 @@ export default function App() {
           </MovieContent>
         </div>
       </main>
+      <Footer></Footer>
     </div>
   )
 }

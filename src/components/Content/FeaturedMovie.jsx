@@ -44,7 +44,7 @@ export default function FeaturedMovie({ movie }) {
             {backdrop && (
                 <img
                     src={backdrop}
-                    alt=""
+                    alt="hero movie image"
                     className="absolute inset-0 -z-20 h-full w-full object-cover object-center"
                 />
             )}
@@ -64,7 +64,7 @@ export default function FeaturedMovie({ movie }) {
                     {movie.title}
                 </h2>
 
-                <div className="mb-4 flex flex-wrap items-center gap-x-4 gap-y-2 text-sm text-slate-300">
+                <div className="mb-4 flex flex-wrap items-center gap-x-4 gap-y-2 text-xs text-slate-300">
                     {movie.vote_average != null && (
                         <span className="font-semibold text-primary">
                             ★ {movie.vote_average.toFixed(1)}

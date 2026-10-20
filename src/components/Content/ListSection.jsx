@@ -12,7 +12,7 @@ export default function ListSection({ children,title,className }) {
 
                 <button
                     onClick={() => setIsOpenMovies(v => !v)}
-                    className="text-gray-400 hover:text-white border w-8 h-8 flex items-center justify-center rounded-lg"
+                    className="text-gray-700 hover:text-primary border w-8 h-8 flex items-center justify-center rounded-lg"
                 >
                     {isOpenMovies ? "▲" : "▼"}
                 </button>

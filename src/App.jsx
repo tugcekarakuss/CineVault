@@ -1,5 +1,5 @@
 import "/src/App.css";
-import { useState, useEffect,useRef  } from "react";
+import { useState, useEffect, useRef } from "react";
 import { getPopularMovies, searchMovies, getMovieDetails } from "./services/tmdb"
 
 /* navbar components */
@@ -48,11 +48,13 @@ export default function App() {
   }
 
   function handleDeleteFromList(id) {
-    setSelectedMovies((selectedMovies) => 
+    setSelectedMovies((selectedMovies) =>
       selectedMovies.filter((m) => m.id !== id))
   }
 
   useEffect(() => {
+    const controller = new AbortController()
+    const signal = controller.signal
     async function getMovies() {
       try {
         setLoading(true);
@@ -60,11 +62,13 @@ export default function App() {
         let results;
 
         if (query.trim().length < 4) {
-          results = await getPopularMovies();
+          results = await getPopularMovies(1, signal);
         }
         else {
-          results = await searchMovies(query.trim());
+          results = await searchMovies(query.trim(), 1, signal);
         }
+        if (signal.aborted) return;
+
         setMovies(results);
         setFeaturedMovie((current) => current ?? results[0] ?? null);
 
@@ -73,22 +77,32 @@ export default function App() {
         }
       }
       catch (err) {
-        setError(err.message || "Failed to load movies.");
+        if (err.name === "AbortError") {
+          console.log("aborted")
+        }
+        else {
+          setError(err.message || "Failed to load movies.");
+        }
       }
       finally {
-        setLoading(false);
+        if (!signal.aborted) {
+          setLoading(false);
+        }
       }
     }
     getMovies();
+    return () => {
+      controller.abort()
+    }
   }, [query]);
 
-const movieDetailsRef = useRef(null);
+  const movieDetailsRef = useRef(null);
   useEffect(() => {
-    if (selectedMovie === null) {return;}
+    if (selectedMovie === null) { return; }
     movieDetailsRef.current?.scrollIntoView({
-    behavior: "smooth",
-    block: "start",
-  });
+      behavior: "smooth",
+      block: "start",
+    });
 
     let ignore = false;
 
@@ -132,7 +146,7 @@ const movieDetailsRef = useRef(null);
         <NavSearchResult movies={movies} />
       </Navbar>
 
-      <main className="px-4 pb-10 pt-24 sm:px-6 lg:px-10">
+      <main className="max-w-7xl mx-auto px-4 pb-10 pt-24 sm:px-6 lg:px-10">        
         <Hero />
         <FeaturedMovie movie={featuredMovie} />
 

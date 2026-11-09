@@ -1,14 +1,14 @@
 const API_KEY = import.meta.env.VITE_TMDB_API_KEY;
 const BASE_URL = "https://api.themoviedb.org/3";
 
-export async function getPopularMovies(page = 1) {
+export async function getPopularMovies(page = 1, signal) {
   const url = new URL(`${BASE_URL}/movie/popular`);
 
   url.searchParams.set("api_key", API_KEY);
   url.searchParams.set("language", "en-US");
   url.searchParams.set("page", page);
 
-  const response = await fetch(url);
+  const response = await fetch(url, { signal });
 
   if (!response.ok) {
     throw new Error(`Unable to load movies.: ${response.status}`);
@@ -18,7 +18,7 @@ export async function getPopularMovies(page = 1) {
   return data.results;
 }
 
-export async function searchMovies(query, page = 1) {
+export async function searchMovies(query, page = 1, signal) {
   const url = new URL(`${BASE_URL}/search/movie`)
 
   url.searchParams.set("api_key", API_KEY);
@@ -26,7 +26,7 @@ export async function searchMovies(query, page = 1) {
   url.searchParams.set("query", query);
   url.searchParams.set("page", page);
 
-  const response = await fetch(url);
+  const response = await fetch(url,{signal});
 
   if (!response.ok) {
     throw new Error(`Unable to search movies: ${response.status}`);
